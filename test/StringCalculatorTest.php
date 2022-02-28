@@ -114,7 +114,7 @@ class StringCalculatorTest extends TestCase
     public function when_negative_number_in_string_return_error()
     {
         $calculatedValue = $this->stringCalculator->add("3,-4.1,-3");
-        $this->assertStringContainsString("Negative not allowed : -4.1 -3", $calculatedValue);
+        $this->assertEquals("Negative not allowed : -4.1, -3", $calculatedValue);
     }
 
     /**
