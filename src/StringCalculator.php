@@ -62,11 +62,21 @@ class StringCalculator
                 $errors .= "Number expected but EOF found\n";
             }
 
-           //SEPARATE THE STRING
-            $separatedString = [];
+            //SEPARATE THE STRING
+            $separatedStringArray = [];
             if (empty($customizedSeparator)) {
-                $separatedString = preg_split('/(,|\n)/', $valueString);
+                $separatedStringArray = preg_split('/(,|\n)/', $valueString);
+
+                //CHECK IF STRING ENDS WITH SEPARATOR
+                if (str_ends_with($valueString, ",") or str_ends_with($valueString, "\n")) {
+                    $errors .= "Number expected but EOF found\n";
+                }
             } else {
+
+                //CHECK IF STRING ENDS WITH SEPARATOR
+                if (str_ends_with($valueString, "$customizedSeparator")){
+                    $errors .= "Number expected but EOF found\n";
+                }
                 //CHECK IF THERE IS A COMMA OR A NEWLINE WHEN THERE IS A CUSTOMIZED SEPARATOR
                 if (str_contains($valueString, ",")) {
                     $commaPos = strpos($valueString, ",");
@@ -75,27 +85,27 @@ class StringCalculator
                     $newlinePos = strpos($valueString, "\n");
                     $errors .= "'$customizedSeparator' expected but '\n' found in position $newlinePos\n";
                 } else {
-                    $separatedString = explode($customizedSeparator, $valueString);
+                    $separatedStringArray = explode($customizedSeparator, $valueString);
                 }
             }
 
             //CHECK IF THE STRING CONTAINS NEGATIVE NUMBERS
-            foreach($separatedString as $number){
-                if(str_contains( $number, "-")){
-                    $negativeNumbers .= " $number,";
+            foreach($separatedStringArray as $negativeNumber){
+                if(str_contains( $negativeNumber, "-")){
+                    $negativeNumbers .= " $negativeNumber,";
                 }
             }
             if(!empty($negativeNumbers)) {
-                $negativeNumbers = substr($negativeNumbers, 0, strlen($negativeNumbers)-1);
+                $negativeNumbers = substr($negativeNumbers, 0, strlen($negativeNumbers)-1); //DELETE THE LAST NUMBER'S FINAL COMMA
                 $errors .= "Negative not allowed :$negativeNumbers\n";
             }
             //RETURN THE ERRORS OR GET THE SUM
             if(!empty($errors)){
-                $errors = substr($errors, 0, strlen($errors)-1);
+                $errors = substr($errors, 0, strlen($errors)-1); //DELETE THE LAST ERROR'S \n
                 return($errors);
             }
             else{
-                foreach ($separatedString as $number)
+                foreach ($separatedStringArray as $number)
                     $sum = $sum + $number;
                 return (strval($sum));
             }
