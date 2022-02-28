@@ -39,7 +39,7 @@ class StringCalculatorTest extends TestCase
     /**
      * @test
      */
-    public function when_one_nomber_given_return_it()
+    public function when_one_number_given_return_it()
     {
         $calculatedValue = $this->stringCalculator->add("999");
         $this->assertEquals("999",$calculatedValue);
