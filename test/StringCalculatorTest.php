@@ -35,6 +35,7 @@ class StringCalculatorTest extends TestCase
         $calculatedValue = $this->stringCalculator->add("");
         $this->assertEquals("0",$calculatedValue);
     }
+
     /**
      * @test
      */
@@ -47,7 +48,7 @@ class StringCalculatorTest extends TestCase
     /**
      * @test
      */
-    public function when_two_number_string_given_return_sum()
+    public function when_two_number_string_given_return_their_sum()
     {
         $calculatedValue = $this->stringCalculator->add("3.8, 7.2");
         $this->assertEquals("11",$calculatedValue);
