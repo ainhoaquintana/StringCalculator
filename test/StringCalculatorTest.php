@@ -104,8 +104,8 @@ class StringCalculatorTest extends TestCase
      */
     public function when_customized_separator_added_dont_separate_with_others()
     {
-        $calculatedValue = $this->stringCalculator->add("//|\n1|2,3");
-        $this->assertEquals("'|' expected but ',' found in position 3", $calculatedValue);
+        $calculatedValue = $this->stringCalculator->add("//|\n1|2\n3");
+        $this->assertEquals("'|' expected but '\n' found in position 3", $calculatedValue);
     }
 
     /**
