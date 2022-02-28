@@ -8,7 +8,7 @@ use function PHPUnit\Framework\isEmpty;
 class StringCalculator
 {
 
-    public function add(string $valueString)
+    public function add(string $valueString): string
     {
         $sum = 0;
         $errors ="";
@@ -82,12 +82,13 @@ class StringCalculator
             //CHECK IF THE STRING CONTAINS NEGATIVE NUMBERS
             foreach($separatedString as $number){
                 if(str_contains( $number, "-")){
-                    $negativeNumbers .= " $number";
+                    $negativeNumbers .= " $number,";
                 }
             }
-            if(!empty($negativeNumbers))
+            if(!empty($negativeNumbers)) {
+                $negativeNumbers = substr($negativeNumbers, 0, strlen($negativeNumbers)-1);
                 $errors .= "Negative not allowed :$negativeNumbers\n";
-
+            }
             //RETURN THE ERRORS OR GET THE SUM
             if(!empty($errors)){
                 $errors = substr($errors, 0, strlen($errors)-1);
