@@ -35,7 +35,6 @@ class StringCalculatorTest extends TestCase
         $calculatedValue = $this->stringCalculator->add("");
         $this->assertEquals("0",$calculatedValue);
     }
-
     /**
      * @test
      */
