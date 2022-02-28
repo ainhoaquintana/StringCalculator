@@ -86,7 +86,7 @@ class StringCalculatorTest extends TestCase
      */
     public function when_input_ends_in_separator_throw_error()
     {
-        $calculatedValue = $this->stringCalculator->add("1\n 2, 3,");
+        $calculatedValue = $this->stringCalculator->add("1\n 2, 3.2,");
         $this->assertEquals("Number expected but EOF found", $calculatedValue);
     }
 
