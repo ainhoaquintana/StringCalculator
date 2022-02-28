@@ -23,7 +23,7 @@ class StringCalculatorTest extends TestCase
      */
     public function when_String_given_return_String()
     {
-        $calculatedValue = $this->stringCalculator->add("1");
+        $calculatedValue = $this->stringCalculator->add("1.1, 2.2");
         $this->assertIsString($calculatedValue);
     }
 
