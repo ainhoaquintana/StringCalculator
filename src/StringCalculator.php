@@ -40,14 +40,10 @@ class StringCalculator
                     }
                 }
                 else {
-                    if($valueString[$i] == "," and $anterior == ","){
-                        //$pos = strpos($valueString, ",");
+                    if($valueString[$i] == "," and $anterior == ",")
                         $errors .= "Number expected but ',' found at position $i\n";
-                    }
-                    if($valueString[$i] == "\n" and $anterior == "\n"){
-                       // $pos = strpos($valueString, "\n");
+                    if($valueString[$i] == "\n" and $anterior == "\n")
                         $errors .= "Number expected but '\n' found at position $i\n";
-                    }
                     if (($valueString[$i] == "," and $anterior == "\n") or ($valueString[$i] == "\n" and $anterior == ",")) {
                         $pos = strpos($valueString, "\n");
                         $errors .= "Number expected but '\n' found at position $pos\n";
