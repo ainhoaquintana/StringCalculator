@@ -60,7 +60,7 @@ class StringCalculator
 
             //CHECK IF STRING ENDS WITH SEPARATOR
             if (str_ends_with($valueString, ",") or str_ends_with($valueString, "\n")) {
-                $errors .= "Number expected but EOF found";
+                $errors .= "Number expected but EOF found\n";
             }
 
            //SEPARATE THE STRING
@@ -71,10 +71,10 @@ class StringCalculator
                 //CHECK IF THERE IS A COMMA OR A NEWLINE WHEN THERE IS A CUSTOMIZED SEPARATOR
                 if (str_contains($valueString, ",")) {
                     $commaPos = strpos($valueString, ",");
-                    $errors .= "'$customizedSeparator' expected but ',' found in position $commaPos";
+                    $errors .= "'$customizedSeparator' expected but ',' found in position $commaPos\n";
                 } elseif (str_contains($valueString, "\n")) {
                     $newlinePos = strpos($valueString, "\n");
-                    $errors .= "'$customizedSeparator' expected but '\n' found in position $newlinePos";
+                    $errors .= "'$customizedSeparator' expected but '\n' found in position $newlinePos\n";
 
                 } else {
                     $separatedString = explode($customizedSeparator, $valueString);
@@ -88,12 +88,13 @@ class StringCalculator
                 }
             }
             if(!empty($negativeNumbers)){
-                $errors .= "Negative not allowed :$negativeNumbers";
+                $errors .= "Negative not allowed :$negativeNumbers\n";
             }
 
 
             //RETURN THE ERRORS OR GET THE SUM
             if(!empty($errors)){
+                $errors = substr($errors, 0, strlen($errors)-1);
                 return($errors);
             }
             else{
