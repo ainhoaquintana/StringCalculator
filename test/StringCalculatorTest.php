@@ -78,7 +78,7 @@ class StringCalculatorTest extends TestCase
     public function when_comma_is_next_to_newline_throw_error()
     {
         $calculatedValue = $this->stringCalculator->add("1\n, 2, 3");
-        $this->assertStringContainsString("Number expected but '\n' found at position", $calculatedValue);
+        $this->assertEquals("Number expected but '\n' found at position 1", $calculatedValue);
     }
 
     /**
