@@ -95,7 +95,7 @@ class StringCalculatorTest extends TestCase
      */
     public function when_customized_separator_added_separate_with_it()
     {
-        $calculatedValue = $this->stringCalculator->add("//sep\n1sep2sep2.2");
+        $calculatedValue = $this->stringCalculator->add("//-\n1-2-2.2");
         $this->assertEquals("5.2", $calculatedValue);
     }
 
