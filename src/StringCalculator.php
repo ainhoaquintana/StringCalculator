@@ -31,28 +31,31 @@ class StringCalculator
 
             $negativeNumbers="";
             $anterior = $valueString[0];
-            for ($i = 1; $i < strlen($valueString); $i++) {
-                //CHECK IF THERE IS A SEPARATOR NEAR ANOTHER
-                if(!empty($customizedSeparator)){
-                    if($valueString[$i] == $customizedSeparator and $anterior == $customizedSeparator){
-                        $pos = strpos($valueString, $customizedSeparator);
-                        $errors .= "Number expected but $customizedSeparator found at position $pos\n";
-                    }
-                }
-                else {
-                    if($valueString[$i] == "," and $anterior == ",")
-                        $errors .= "Number expected but ',' found at position $i\n";
-                    if($valueString[$i] == "\n" and $anterior == "\n")
-                        $errors .= "Number expected but '\n' found at position $i\n";
-                    if (($valueString[$i] == "," and $anterior == "\n") or ($valueString[$i] == "\n" and $anterior == ",")) {
-                        $pos = strpos($valueString, "\n");
-                        $errors .= "Number expected but '\n' found at position $pos\n";
-                    }
 
+            //CHECK IF THERE IS A SEPARATOR NEAR ANOTHER
+            if(!empty($customizedSeparator)){
+                if (str_contains($valueString, "$customizedSeparator$customizedSeparator")) {
+                    $customizedSeparatorPos = strpos($valueString, "$customizedSeparator") + 1;
+                    $errors .= "Number expected but $customizedSeparator found at position $customizedSeparatorPos\n";
                 }
-                $anterior = $valueString[$i];
+            }else{
+                if (str_contains($valueString, ",,")) {
+                    $commaPos = strpos($valueString, ",,") + 1;
+                    $errors .= "Number expected but ',' found at position $commaPos\n";
+                }
+                if (str_contains($valueString, "\n\n")) {
+                    $newlinePos = strpos($valueString, "\n\n") + 1;
+                    $errors .= "Number expected but '\n' found at position $newlinePos\n";
+                }
+                if (str_contains($valueString, ",\n")) {
+                    $newlinePos = strpos($valueString, ",\n") + 1;
+                    $errors .= "Number expected but '\n' found at position $newlinePos\n";
+                }
+                if (str_contains($valueString, "\n,")) {
+                    $commaPos = strpos($valueString, "\n,") + 1;
+                    $errors .= "Number expected but ',' found at position $commaPos\n";
+                }
             }
-
 
             //CHECK IF STRING ENDS WITH SEPARATOR
             if (str_ends_with($valueString, ",") or str_ends_with($valueString, "\n")) {
@@ -71,7 +74,6 @@ class StringCalculator
                 } elseif (str_contains($valueString, "\n")) {
                     $newlinePos = strpos($valueString, "\n");
                     $errors .= "'$customizedSeparator' expected but '\n' found in position $newlinePos\n";
-
                 } else {
                     $separatedString = explode($customizedSeparator, $valueString);
                 }
@@ -83,10 +85,8 @@ class StringCalculator
                     $negativeNumbers .= " $number";
                 }
             }
-            if(!empty($negativeNumbers)){
+            if(!empty($negativeNumbers))
                 $errors .= "Negative not allowed :$negativeNumbers\n";
-            }
-
 
             //RETURN THE ERRORS OR GET THE SUM
             if(!empty($errors)){
@@ -94,12 +94,10 @@ class StringCalculator
                 return($errors);
             }
             else{
-                foreach ($separatedString as $number) {
+                foreach ($separatedString as $number)
                     $sum = $sum + $number;
-                }
                 return (strval($sum));
             }
-
         }
     }
 }
