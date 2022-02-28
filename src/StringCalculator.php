@@ -11,34 +11,45 @@ class StringCalculator
     public function add(string $valueString): string
     {
         $sum = 0;
-        $errors ="";
+        $errors = "";
         $customizedSeparator = "";
+        $negativeNumbers = "";
+        $separatedStringArray = [];
 
-        if(empty($valueString)){
+        if(empty($valueString))
             return strval($sum);
-        }
-        else {
-            //GET THE NEW SEPARATOR IF THE STRING STARTS WITH "//"
+        else{
+            //GET THE CUSTOMIZED SEPARATOR IF THE STRING STARTS WITH '//'
             if ($valueString[0] == "/") {
                 $customizedSeparatorIterator = 2;
                 while ($valueString[$customizedSeparatorIterator] != "\n") {
                     $customizedSeparator .= $valueString[$customizedSeparatorIterator];
                     $customizedSeparatorIterator++;
                 }
-                $head = "//$customizedSeparator\n";
-                $valueString = str_replace($head, "", $valueString);
-            }
+                $valueString = str_replace("//$customizedSeparator\n", "", $valueString); //DELETE THE BEGINNING OF THE STRING FOR ANALYZING ONLY THE NUMERIC PART
 
-            $negativeNumbers="";
-            $anterior = $valueString[0];
-
-            //CHECK IF THERE IS A SEPARATOR NEAR ANOTHER
-            if(!empty($customizedSeparator)){
+                //CHECK IF THERE IS A SEPARATOR NEAR ANOTHER
                 if (str_contains($valueString, "$customizedSeparator$customizedSeparator")) {
                     $customizedSeparatorPos = strpos($valueString, "$customizedSeparator") + 1;
                     $errors .= "Number expected but $customizedSeparator found at position $customizedSeparatorPos\n";
                 }
+
+                //CHECK IF STRING ENDS WITH SEPARATOR
+                if (str_ends_with($valueString, "$customizedSeparator"))
+                    $errors .= "Number expected but EOF found\n";
+
+                //CHECK IF THERE IS A COMMA OR A NEWLINE WHEN THERE IS A CUSTOMIZED SEPARATOR
+                if (str_contains($valueString, ",")) {
+                    $commaPos = strpos($valueString, ",");
+                    $errors .= "'$customizedSeparator' expected but ',' found in position $commaPos\n";
+                } elseif (str_contains($valueString, "\n")) {
+                    $newlinePos = strpos($valueString, "\n");
+                    $errors .= "'$customizedSeparator' expected but '\n' found in position $newlinePos\n";
+                } else
+                    $separatedStringArray = explode($customizedSeparator, $valueString);
             }else{
+
+                //CHECK IF THERE IS A SEPARATOR NEAR ANOTHER
                 if (str_contains($valueString, ",,")) {
                     $commaPos = strpos($valueString, ",,") + 1;
                     $errors .= "Number expected but ',' found at position $commaPos\n";
@@ -55,43 +66,17 @@ class StringCalculator
                     $commaPos = strpos($valueString, "\n,") + 1;
                     $errors .= "Number expected but ',' found at position $commaPos\n";
                 }
-            }
 
-            //CHECK IF STRING ENDS WITH SEPARATOR
-            if (str_ends_with($valueString, ",") or str_ends_with($valueString, "\n")) {
-                $errors .= "Number expected but EOF found\n";
-            }
+                //CHECK IF STRING ENDS WITH SEPARATOR
+                if (str_ends_with($valueString, ",") or str_ends_with($valueString, "\n"))
+                    $errors .= "Number expected but EOF found\n";
 
-            //SEPARATE THE STRING
-            $separatedStringArray = [];
-            if (empty($customizedSeparator)) {
+                //SEPARATE THE STRING
                 $separatedStringArray = preg_split('/(,|\n)/', $valueString);
-
-                //CHECK IF STRING ENDS WITH SEPARATOR
-                if (str_ends_with($valueString, ",") or str_ends_with($valueString, "\n")) {
-                    $errors .= "Number expected but EOF found\n";
-                }
-            } else {
-
-                //CHECK IF STRING ENDS WITH SEPARATOR
-                if (str_ends_with($valueString, "$customizedSeparator")){
-                    $errors .= "Number expected but EOF found\n";
-                }
-                //CHECK IF THERE IS A COMMA OR A NEWLINE WHEN THERE IS A CUSTOMIZED SEPARATOR
-                if (str_contains($valueString, ",")) {
-                    $commaPos = strpos($valueString, ",");
-                    $errors .= "'$customizedSeparator' expected but ',' found in position $commaPos\n";
-                } elseif (str_contains($valueString, "\n")) {
-                    $newlinePos = strpos($valueString, "\n");
-                    $errors .= "'$customizedSeparator' expected but '\n' found in position $newlinePos\n";
-                } else {
-                    $separatedStringArray = explode($customizedSeparator, $valueString);
-                }
             }
-
             //CHECK IF THE STRING CONTAINS NEGATIVE NUMBERS
             foreach($separatedStringArray as $negativeNumber){
-                if(str_contains( $negativeNumber, "-")){
+                if(str_contains($negativeNumber, "-")){
                     $negativeNumbers .= " $negativeNumber,";
                 }
             }
