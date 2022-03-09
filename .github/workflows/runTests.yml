@@ -1,0 +1,12 @@
+name: runTests
+on: [push]
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run checkout
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: composer install
+      - name: Run units test
+        run: ./vendor/bin/phpunit -c phpunit.xml
